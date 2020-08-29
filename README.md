@@ -7,12 +7,13 @@ First time making a github repos. This was done using C# WPF.
 3. What it can do so far...
 
 # Abilities
+
+    ![image](https://github.com/Mfkisdo/StashEdit/blob/master/StashEdit/Images/Example1.jpg)
+    
 1. Allows you to search the stash db and your sort folder.
 2. A List of results will be shown as file names and then search the pornDB for similiar names, if there is more than one result it will display all found url's with images to help selected
   the right scene data.
 3. If you find a matching scene on PornDB you can save.
 4. What saving does it renames the file and also updates the title/url/details/ to the stash app db. 
-
-    ![image](https://github.com/Mfkisdo/StashEdit/blob/master/StashEdit/Images/Example1.jpg)
 
 Warning this is still under development and may take some time to work the kinks out.
