@@ -8,7 +8,8 @@
         WindowStartupLocation="CenterScreen"
         xmlns:local="clr-namespace:StashEdit" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Edit Stash Data by TheLifeTap" Height="720" Width="1280">
+        WindowState="Normal" ResizeMode="NoResize"
+        Title="Edit Stash Data by TheLifeTap" Height="720" Width="1100">
 
     <xctk:BusyIndicator x:Name="biBusy" BusyContent="Fetching scene match" >
         <Grid>
@@ -38,8 +39,8 @@
             </DockPanel>
             <ComboBox Name="cbSearchDB" IsEnabled="True" IsEditable="True" TextBoxBase.TextChanged="cbSearchDB_TextChanged"
                    SelectedValuePath="id" DisplayMemberPath="path" HorizontalAlignment="Left" Margin="96,50,0,0" VerticalAlignment="Top" Width="264"/>
-            <ListBox x:Name="lbFileList"  Margin="10,152,0,0" SelectionChanged="lbFileList_SelectionChanged" ItemsSource="{Binding dt}"
-                 SelectedValuePath="path" MouseDoubleClick="lbFileList_MouseDoubleClick" HorizontalAlignment="Left" Width="350" VerticalAlignment="Top" Height="313">
+            <ListBox x:Name="lbFileList" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,145,704,0" SelectionChanged="lbFileList_SelectionChanged" ItemsSource="{Binding dt}"
+                 SelectedValuePath="path" MouseDoubleClick="lbFileList_MouseDoubleClick" Width="381" Height="297">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -49,12 +50,12 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <TextBox x:Name="txtSearchMetaAPI" HorizontalAlignment="Left" Margin="750,73,0,0" VerticalAlignment="Top" Width="345" Height="40"/>
-            <Button x:Name="btnSearchMeta" Click="btnSearchMeta_Click"  Content="Search" HorizontalAlignment="Left" Margin="1100,74,0,0" VerticalAlignment="Top" Width="85" Height="39"/>
-            <TextBox x:Name="txtNewName" HorizontalAlignment="Left" Margin="617,488,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="600"/>
+            <TextBox x:Name="txtSearchMetaAPI" HorizontalAlignment="Left" Margin="566,73,0,0" VerticalAlignment="Top" Width="345" Height="40"/>
+            <Button x:Name="btnSearchMeta" Click="btnSearchMeta_Click"  Content="Search" HorizontalAlignment="Left" Margin="916,74,0,0" VerticalAlignment="Top" Width="85" Height="39"/>
+            <TextBox x:Name="txtNewName" HorizontalAlignment="Left" Margin="433,488,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="600"/>
             <Label Content="Search" HorizontalAlignment="Left" Margin="15,48,0,0" VerticalAlignment="Top" Width="81"/>
-            <Label Content="New Name is automatically generated from URL above or editable" HorizontalAlignment="Left" Margin="604,457,0,0" VerticalAlignment="Top"/>
-            <ListView x:Name="lbSearchList" SelectedValuePath="id" SelectionChanged="lbSearchList_SelectionChanged" VerticalAlignment="Top" Width="650" Height="334" Margin="604,118,0,0"
+            <Label Content="New Name is automatically generated from URL above or editable" HorizontalAlignment="Left" Margin="420,457,0,0" VerticalAlignment="Top"/>
+            <ListView x:Name="lbSearchList" SelectedValuePath="id" SelectionChanged="lbSearchList_SelectionChanged" VerticalAlignment="Top" Width="657" Height="334" Margin="0,118,10,0"
                   HorizontalAlignment="Right">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -79,8 +80,8 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="btnSave" Content="Save New Name and Update Stash" Click="btnSave_Click" HorizontalAlignment="Left" Margin="617,562,0,0" VerticalAlignment="Top" Height="26"/>
-            <Grid Margin="15,470,920,5" >
+            <Button x:Name="btnSave" Content="Save New Name and Update Stash" Click="btnSave_Click" HorizontalAlignment="Left" Margin="432,562,0,0" VerticalAlignment="Top" Height="26" Width="232"/>
+            <Grid Margin="15,470,704,5" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="*" />
@@ -100,12 +101,12 @@
                 <TextBox x:Name="txtDBTitleName" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Margin="10,0,10,0" Height="35" VerticalAlignment="Center" HorizontalScrollBarVisibility="Auto"/>
                 <TextBox x:Name="txtDBUrl" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" Margin="10,0,10,0" Height="35" VerticalAlignment="Center" HorizontalScrollBarVisibility="Auto"/>
             </Grid>
-            <Label Content="Search For a scene" HorizontalAlignment="Left" Margin="625,68,0,0" VerticalAlignment="Top" Width="120"/>
-            <Button x:Name="btnUpdateDB" Content="Update Only Stash" Click="btnUpdateDB_Click" HorizontalAlignment="Left" Margin="809,564,0,0" VerticalAlignment="Top" Height="24" Width="116"/>
-            <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="1185,74,0,0" VerticalAlignment="Top" Width="85" Height="39"/>
-            <TextBox x:Name="txtDBTitle" HorizontalAlignment="Left" Margin="702,526,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="515"/>
-            <Label Content="Title For Stash" HorizontalAlignment="Left" Margin="606,522,0,0" VerticalAlignment="Top" Width="91"/>
-            <StackPanel Margin="15,94,920,559" Orientation="Horizontal">
+            <Label Content="Search For a scene" HorizontalAlignment="Left" Margin="440,68,0,0" VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="btnUpdateDB" Content="Update Only Stash" Click="btnUpdateDB_Click" HorizontalAlignment="Left" Margin="703,562,0,0" VerticalAlignment="Top" Height="26" Width="117"/>
+            <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="1001,74,0,0" VerticalAlignment="Top" Width="85" Height="39"/>
+            <TextBox x:Name="txtDBTitle" HorizontalAlignment="Left" Margin="518,526,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="515"/>
+            <Label Content="Title For Stash" HorizontalAlignment="Left" Margin="424,522,0,0" VerticalAlignment="Top" Width="92"/>
+            <StackPanel Margin="15,94,740,559" Orientation="Horizontal">
                 <RadioButton x:Name="chkAll" Checked="chkAll_Checked" IsChecked="True">All</RadioButton>
                 <RadioButton x:Name="chkRecent" Checked="chkRecent_Checked">Most Recent</RadioButton>
                 <RadioButton x:Name="chkNoURL" Checked="chkNoURL_Checked">No URL Assigned</RadioButton>
