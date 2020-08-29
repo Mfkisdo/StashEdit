@@ -12,3 +12,6 @@ First time making a github repos. This was done using C# WPF.
   the right scene data.
 3. If you find a matching scene on PornDB you can save.
 4. What saving does it renames the file and also updates the title/url/details/ to the stash app db. 
+
+
+Warning this is still under development and may take some time to work the kinks out.
