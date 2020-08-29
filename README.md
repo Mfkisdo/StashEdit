@@ -34,6 +34,7 @@ First time making a github repo. This was done using C# WPF.
 4. What saving does it renames the file and also updates the title/url/details/studio to the stash app db. Updated scenes are also tagged with 'scan'
 5. From here you have two options
     i. I have added support 
+6. Double Click file name in list to open it in default video player.
 
 Warning this is still under development and may take some time to work the kinks out.
 
