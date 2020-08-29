@@ -31,11 +31,11 @@ namespace StashEdit
 
         public MainWindow()
         {
-            InitializeComponent();
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\StarkSettings.xml"))
             {
                 xf.CheckForSettingsXmlFile();
             }
+            InitializeComponent();
 
             xf = xf.GetXmlSettings();
         }

@@ -83,13 +83,13 @@ namespace StashEdit.Class
         {
             XmlSettings xm = new XmlSettings();
             string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            xm.StashDBLoc = @"C:\Users\" + userName + @"\.stash\stash-go.sqlite";
+            xm.StashDBLoc = @"set";
             xm.MetaApiLimit = "50";
             xm.NewNameStyle = "Publisher;Actor;Title";
-            xm.ImagesToTagsLocation = @"C:\Images";
-            xm.SortFolderLocation = @"C:\Sort";
-            xm.DestinationFolders = @"C:\Studio;C:\Actors";
-            xm.stashPornDBScrapper = @"Set Me!";
+            xm.ImagesToTagsLocation = @"set";
+            xm.SortFolderLocation = @"set";
+            xm.DestinationFolders = @"set;set";
+            xm.stashPornDBScrapper = @"set";
             return xm;
         }
     }

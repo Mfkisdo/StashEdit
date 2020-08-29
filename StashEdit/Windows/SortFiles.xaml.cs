@@ -48,7 +48,7 @@ namespace StashEdit.Windows
 
             worker.ProgressChanged += (o, ea) =>
             {
-                
+
             };
             worker.RunWorkerCompleted += (o, ea) =>
             {
@@ -65,8 +65,16 @@ namespace StashEdit.Windows
                 {
                     list.Add("From " +fm.FileFrom + Environment.NewLine + "To:"  + fm.FileTo);
                 }
-                //use the Dispatcher to delegate the listOfStrings collection back to the UI
-                Dispatcher.Invoke((Action)(() => txtLog.Text = String.Join(Environment.NewLine, list)));
+                if (list.Count != 0)
+                {
+                    //use the Dispatcher to delegate the listOfStrings collection back to the UI
+                    Dispatcher.Invoke((Action)(() => txtLog.Text = String.Join(Environment.NewLine, list)));
+                }
+                else
+                {
+                    Dispatcher.Invoke((Action)(() => txtLog.Content = "Nothing found"));
+                }
+                
             };
         }
 
@@ -106,17 +114,6 @@ namespace StashEdit.Windows
                             }
                         }
                     }
-                    else
-                    {
-                        Xceed.Wpf.Toolkit.MessageBox.Show("The following source path was not found: " + Environment.NewLine
-                            + sortfolder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-
-                }
-                else
-                {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("The following destination path was not found: " + Environment.NewLine +
-                        path, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             return fml;

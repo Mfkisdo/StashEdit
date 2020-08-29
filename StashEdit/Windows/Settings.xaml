@@ -21,31 +21,7 @@
     </Window.Resources>
     <Grid>
         <TabControl x:Name="tbMain" Margin="0,10,0,0">
-            <TabItem Header="General" IsSelected="True">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="45"/>
-                        <RowDefinition Height="45"/>
-                        <RowDefinition Height="45"/>
-                    </Grid.RowDefinitions>
-                    <Label Content="Search URL" Margin="10"/>
-                    <StackPanel Orientation="Horizontal" Grid.Column="1">
-                        <RadioButton x:Name="chkAll" IsChecked="True" Content="MetaDataAPI"/>
-                        <RadioButton x:Name="chkRecent" IsEnabled="False" Content="Other"/>
-                        <RadioButton x:Name="chkNoURL" IsEnabled="False" Content="Other"/>
-                    </StackPanel>
-
-                </Grid>
-            </TabItem>
-            <TabItem Header="Database">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-            <TabItem Header="XML Settings">
+            <TabItem Header="XML Settings" IsSelected="True">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="175"/>
@@ -82,9 +58,33 @@
                     <Label Content="Stash PornDB Scraper Loc." Margin="6" Grid.Row="6" ToolTip="Folder containing the scrapeScenes.py file"/>
                     <TextBox x:Name="txtstashscrapper" TextWrapping="Wrap" Grid.Column="1" Grid.Row="6" 
                              TextChanged="txtstashscrapper_TextChanged"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="General" >
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Search URL" Margin="10"/>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                        <RadioButton x:Name="chkAll" IsChecked="True" Content="MetaDataAPI"/>
+                        <RadioButton x:Name="chkRecent" IsEnabled="False" Content="Other"/>
+                        <RadioButton x:Name="chkNoURL" IsEnabled="False" Content="Other"/>
+                    </StackPanel>
 
                 </Grid>
             </TabItem>
+            <TabItem Header="Database">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            
         </TabControl>
 
     </Grid>

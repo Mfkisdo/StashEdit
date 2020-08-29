@@ -5,6 +5,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Windows;
 
 namespace StashEdit.Class
 {
@@ -14,17 +15,25 @@ namespace StashEdit.Class
         XmlSettings xm = new XmlSettings();
         public DataTable RunQuery(String qry)
         {
-            xm = xm.GetXmlSettings();
-            SQLiteConnection con = new SQLiteConnection(xm.StashDBLoc);
             DataTable dt = new DataTable();
-            dt.Columns.Add("imgcheck");
-            SQLiteCommand com = new SQLiteCommand();
-            com.CommandText = qry;
-            com.Connection = con;
-            con.Open();
-            var adpt = new SQLiteDataAdapter(com);
-            adpt.Fill(dt);
-            con.Close();
+            xm = xm.GetXmlSettings();
+            if (xm.StashDBLoc == "set")
+            {
+                Xceed.Wpf.Toolkit.MessageBox.Show("Set stash database path", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                SQLiteConnection con = new SQLiteConnection(xm.StashDBLoc);
+                dt.Columns.Add("imgcheck");
+                SQLiteCommand com = new SQLiteCommand();
+                com.CommandText = qry;
+                com.Connection = con;
+                con.Open();
+                var adpt = new SQLiteDataAdapter(com);
+                adpt.Fill(dt);
+                con.Close();
+            }
+
             return dt;
         }
         public DataTable RunCommand(SQLiteCommand cmd)
