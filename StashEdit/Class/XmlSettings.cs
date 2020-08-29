@@ -25,6 +25,9 @@ namespace StashEdit.Class
         [XmlElement(Namespace = "DestinationFolders")]
         public string DestinationFolders;
 
+        [XmlElement(Namespace = "stashPornDBScrapper")]
+        public string stashPornDBScrapper;
+
 
 
         public void WriteToXMLDoc(XmlSettings xSettings)
@@ -86,6 +89,7 @@ namespace StashEdit.Class
             xm.ImagesToTagsLocation = @"C:\Images";
             xm.SortFolderLocation = @"C:\Sort";
             xm.DestinationFolders = @"C:\Studio;C:\Actors";
+            xm.stashPornDBScrapper = @"Set Me!";
             return xm;
         }
     }

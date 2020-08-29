@@ -85,7 +85,7 @@ namespace StashEdit
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error");
+                    Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 var x = "https://metadataapi.net/api/scenes?parse=" + lbSearchList.SelectedValue.ToString();
                 var scni = GetSceneInfo(x);
@@ -103,19 +103,17 @@ namespace StashEdit
                         }
                         else
                         {
-                            MessageBox.Show("File name is the same.", "Info");
+                            Xceed.Wpf.Toolkit.MessageBox.Show("File already exists", "Informational", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("No file selected", "Warning");
+                        Xceed.Wpf.Toolkit.MessageBox.Show("No File Selected", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
 
                 }
             }
         }
-
-
         private async Task SearchForMetaDataAsync()
         {
             string buildqry = "https://metadataapi.net/api/scenes?parse=" + txtSearchMetaAPI.Text + "&" + xf.MetaApiLimit;
@@ -143,7 +141,7 @@ namespace StashEdit
             }
             else
             {
-                MessageBox.Show("Unable to find scene", "Informational");
+                Xceed.Wpf.Toolkit.MessageBox.Show("unable to find scene, edit the search params if possible", "Informational", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             biBusy.IsBusy = false;
         }
@@ -183,11 +181,12 @@ namespace StashEdit
                             cbSearchDB.Text = "";
                             cbSearchDB.Text = cache;
                         }
+                        Xceed.Wpf.Toolkit.MessageBox.Show("File Updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
                 else
                 {
-                    var d = MessageBox.Show("File exists already, click ok to open directory.", "Info", MessageBoxButton.OKCancel);
+                    var d = Xceed.Wpf.Toolkit.MessageBox.Show("File already exists click of to open directory", "Informational", MessageBoxButton.OKCancel, MessageBoxImage.Information);
                     if (d == MessageBoxResult.OK)
                     {
                         Process.Start("explorer.exe", "/select, " + OldFileInfo.FullName);
@@ -196,8 +195,9 @@ namespace StashEdit
             }
             else
             {
-                MessageBox.Show("No file selected", "Info");
+                Xceed.Wpf.Toolkit.MessageBox.Show("No File Selected", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+
         }
         private void btnUpdateDB_Click(object sender, RoutedEventArgs e)
         {
@@ -262,7 +262,7 @@ namespace StashEdit
             psi.FileName = "powershell.exe";
             Process process = new Process();
             process.StartInfo = psi;
-            psi.WorkingDirectory = @"Q:\Data\Programs for Management\stashScraper";
+            psi.WorkingDirectory = xf.stashPornDBScrapper;
             var rslt = MessageBox.Show("Scan for only 'scan' tag?", "Type", MessageBoxButton.YesNo);
             if (rslt == MessageBoxResult.Yes)
             {
