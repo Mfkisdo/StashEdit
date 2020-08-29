@@ -23,7 +23,7 @@ namespace StashEdit.Class
             }
             else
             {
-                SQLiteConnection con = new SQLiteConnection(xm.StashDBLoc);
+                SQLiteConnection con = new SQLiteConnection("Data Source=" + xm.StashDBLoc);
                 dt.Columns.Add("imgcheck");
                 SQLiteCommand com = new SQLiteCommand();
                 com.CommandText = qry;
@@ -39,7 +39,7 @@ namespace StashEdit.Class
         public DataTable RunCommand(SQLiteCommand cmd)
         {
             xm = xm.GetXmlSettings();
-            SQLiteConnection con = new SQLiteConnection(xm.StashDBLoc);
+            SQLiteConnection con = new SQLiteConnection("Data Source=" + xm.StashDBLoc);
             DataTable dt = new DataTable();
             dt.Columns.Add("imgcheck");
             cmd.Connection = con;
@@ -52,7 +52,7 @@ namespace StashEdit.Class
         public void UpdateStashDB(UpdateDbContents NewInfo)
         {
             xm = xm.GetXmlSettings();
-            SQLiteConnection con = new SQLiteConnection(xm.StashDBLoc);
+            SQLiteConnection con = new SQLiteConnection("Data Source=" + xm.StashDBLoc);
             con.Open();
             SQLiteCommand command = new SQLiteCommand();
             command.Connection = con;

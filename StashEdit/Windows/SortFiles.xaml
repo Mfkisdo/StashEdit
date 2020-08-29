@@ -11,12 +11,12 @@
         <Grid>
 
             <Label Content="Source Folder (Sort)" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Width="134"/>
-            <TextBox x:Name="txtSourceFolder" HorizontalAlignment="Left" Margin="149,12,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="232" Height="22"/>
+            <TextBox x:Name="txtSourceFolder" HorizontalAlignment="Left" Margin="149,12,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="336" Height="22"/>
             <Label Content="Destination Folders" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="134"/>
-            <xctk:MultiLineTextEditor x:Name="txtDestFolders" Content="Click for Folders" Margin="149,69,143,224"/>
-            <Button x:Name="btnMoveFiles" Content="Move Files" HorizontalAlignment="Left" Click="btnMoveFiles_Click"
-                    Margin="308,118,0,0" VerticalAlignment="Top" Height="28" Width="63"/>
-            <xctk:MultiLineTextEditor x:Name="txtLog" Content="Results" Margin="149,173,143,122"/>
+            <xctk:MultiLineTextEditor x:Name="txtDestFolders" Content="Click for Folders" Margin="149,69,39,222"/>
+            <Button x:Name="btnMoveFiles" Content="Test" HorizontalAlignment="Left" Click="btnMoveFiles_Click"
+                    Margin="411,130,0,0" VerticalAlignment="Top" Height="28" Width="63"/>
+            <xctk:MultiLineTextEditor x:Name="txtLog" Margin="149,173,39,112"/>
             <Label Content="Log" HorizontalAlignment="Left" Margin="10,181,0,0" VerticalAlignment="Top" Width="134"/>
         </Grid>
     </xctk:BusyIndicator>

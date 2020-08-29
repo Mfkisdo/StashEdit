@@ -164,7 +164,7 @@ namespace StashEdit
                     //File Doesn't already exists update it
                     File.Move(OldFileInfo.FullName, System.IO.Path.Combine(OldFileInfo.Directory.FullName, NewName));
                     //Check if we are only fixing the sort folder typically this isnt in stash yet.
-                    if(!chkSortFldr.IsChecked == true)
+                    if (!chkSortFldr.IsChecked == true)
                     {
                         UpdateDbContents cont = new UpdateDbContents();
                         cont.id = txtDBid.Text;
@@ -258,21 +258,30 @@ namespace StashEdit
         }
         private void btnStartStashRenamer_Click(object sender, RoutedEventArgs e)
         {
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = "powershell.exe";
-            Process process = new Process();
-            process.StartInfo = psi;
-            psi.WorkingDirectory = xf.stashPornDBScrapper;
-            var rslt = MessageBox.Show("Scan for only 'scan' tag?", "Type", MessageBoxButton.YesNo);
-            if (rslt == MessageBoxResult.Yes)
+            if (File.Exists(Path.Combine(xf.stashPornDBScrapper, @"\scrapescenes.py")))
             {
-                psi.Arguments = @"python .\scrapescenes.py --tags scan";
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = "powershell.exe";
+                Process process = new Process();
+                process.StartInfo = psi;
+                psi.WorkingDirectory = xf.stashPornDBScrapper;
+                var rslt = MessageBox.Show("Scan for only 'scan' tag?", "Type", MessageBoxButton.YesNo);
+                if (rslt == MessageBoxResult.Yes)
+                {
+                    psi.Arguments = @"python .\scrapescenes.py --tags scan";
+                }
+                else
+                {
+                    psi.Arguments = @"python .\scrapescenes.py";
+                }
+                process.Start();
             }
             else
             {
-                psi.Arguments = @"python .\scrapescenes.py";
+                Xceed.Wpf.Toolkit.MessageBox.Show(@"scrapescenes.py not found in folder: " + Environment.NewLine + 
+                        xf.stashPornDBScrapper, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            process.Start();
+
         }
         private void btnGenImagesForTags_Click(object sender, RoutedEventArgs e)
         {
@@ -413,6 +422,6 @@ namespace StashEdit
             RefreshListFiles();
         }
         #endregion
-        
+
     }
 }

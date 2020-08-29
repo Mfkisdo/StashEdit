@@ -68,6 +68,7 @@ namespace StashEdit.Windows
                 if (list.Count != 0)
                 {
                     //use the Dispatcher to delegate the listOfStrings collection back to the UI
+                    Dispatcher.Invoke((Action)(() => txtLog.Content = "Results"));
                     Dispatcher.Invoke((Action)(() => txtLog.Text = String.Join(Environment.NewLine, list)));
                 }
                 else
