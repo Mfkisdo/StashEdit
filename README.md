@@ -36,3 +36,5 @@ First time making a github repo. This was done using C# WPF.
     i. I have added support 
 
 Warning this is still under development and may take some time to work the kinks out.
+
+[Wiki](https://github.com/Mfkisdo/StashEdit/wiki)
