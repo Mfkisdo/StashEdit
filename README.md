@@ -7,7 +7,9 @@ First time making a github repo. This was done using C# WPF.
 3. What it can do so far...
 
 # Setup
-1. XML Settings under options.
+
+* Download exe from [here](https://github.com/Mfkisdo/StashEdit/releases) or clone the repo in Visual Studio. For the moment it only works on Windows.
+* XML Settings under options.
     * If you use stash_porndb_scrapper, I would suggest creating a new tag in stash 'scan'.
     * Enter the path to your stash db wherever it may be.
     * API Limit is default to 50 usually, this effects the amount of matches to a scene is shown. The max is 100.
