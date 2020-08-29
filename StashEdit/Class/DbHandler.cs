@@ -8,12 +8,14 @@ using System.Text;
 
 namespace StashEdit.Class
 {
+    
     class DbHandler
     {
-        SQLiteConnection con = new SQLiteConnection(@"Data Source=C:\Users\Branden\.stash\stash-go.sqlite;Version=3;");
-
+        XmlSettings xm = new XmlSettings();
         public DataTable RunQuery(String qry)
         {
+            xm = xm.GetXmlSettings();
+            SQLiteConnection con = new SQLiteConnection(xm.StashDBLoc);
             DataTable dt = new DataTable();
             dt.Columns.Add("imgcheck");
             SQLiteCommand com = new SQLiteCommand();
@@ -27,6 +29,8 @@ namespace StashEdit.Class
         }
         public DataTable RunCommand(SQLiteCommand cmd)
         {
+            xm = xm.GetXmlSettings();
+            SQLiteConnection con = new SQLiteConnection(xm.StashDBLoc);
             DataTable dt = new DataTable();
             dt.Columns.Add("imgcheck");
             cmd.Connection = con;
@@ -38,8 +42,8 @@ namespace StashEdit.Class
         }
         public void UpdateStashDB(UpdateDbContents NewInfo)
         {
-
-            SQLiteConnection con = new SQLiteConnection(@"Data Source=C:\Users\Branden\.stash\stash-go.sqlite;Version=3;");
+            xm = xm.GetXmlSettings();
+            SQLiteConnection con = new SQLiteConnection(xm.StashDBLoc);
             con.Open();
             SQLiteCommand command = new SQLiteCommand();
             command.Connection = con;
