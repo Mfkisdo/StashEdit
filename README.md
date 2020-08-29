@@ -8,7 +8,7 @@ First time making a github repos. This was done using C# WPF.
 
 # Abilities
 
-    ![image](https://github.com/Mfkisdo/StashEdit/blob/master/StashEdit/Images/Example1.jpg)
+![image](https://github.com/Mfkisdo/StashEdit/blob/master/StashEdit/Images/Example1.jpg)
     
 1. Allows you to search the stash db and your sort folder.
 2. A List of results will be shown as file names and then search the pornDB for similiar names, if there is more than one result it will display all found url's with images to help selected
