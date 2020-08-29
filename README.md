@@ -27,11 +27,13 @@ First time making a github repo. This was done using C# WPF.
 
 ![image](https://github.com/Mfkisdo/StashEdit/blob/master/StashEdit/Images/Example1.jpg)
     
-1. Allows you to search the stash db for a specific file name/recently added/no URL attached to a scene/sort folder set up from settings
-2. A List of results will be shown as file names and then search the pornDB for similiar names, if there is more than one result it will display all found url's with images to        help selected the right scene data.
-3. If you find a matching scene on PornDB you can save.
-4. What saving does it renames the file and also updates the title/url/details/studio to the stash app db. Updated scenes are also tagged with 'scan'
-5. Double Click file name in list to open it in default video player.
+* Allows you to search the stash db for a specific file name/recently added/no URL attached to a scene/sort folder (set up from settings)
+* A List of results will be shown as file names and then search the pornDB for similiar names you can edit the textbox for different results, if there is more than one result it   * will display all found url's with images to help selected the right scene data.
+* If you find a matching scene on PornDB select the image and a new name and title will be generated automatically.
+* What saving does it renames the file and also updates the title/url/details/studio but not the image to the stash app db. Updated scenes are also tagged with 'scan'
+   * From here you can search stash with the scan tag and update the scene manually using a built in scraper
+   * If you set up stash_porndb_scrapper, then just use database -> StartPDRename, then click 'Delete Tag (scan). Which will remove all scenes with the scan tag for you.
+* Double Click file name in list to open it in default video player.
 
 Off note: Still trying to figure out git with Visual Studio.
 
