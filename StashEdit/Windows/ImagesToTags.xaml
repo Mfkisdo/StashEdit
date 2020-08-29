@@ -1,0 +1,21 @@
+﻿<Window x:Class="StashEdit.Windows.ImagesToTags"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StashEdit.Windows"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="ImagesToTags" Height="468" Width="464">
+    <Grid>
+        <TextBox x:Name="txtFolderPath" TextChanged="txtFolderPath_TextChanged" HorizontalAlignment="Left" Margin="91,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334"/>
+        <Label Content="Match Image Name in Folder to Tag Name" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" Width="265"/>
+        <Label Content="Folder Path:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="81"/>
+        <Button x:Name="btnSave" Content="Save" Click="btnSave_Click" HorizontalAlignment="Left" Margin="339,67,0,0" VerticalAlignment="Top" Width="86"/>
+        <ListBox x:Name="lbImages" Margin="10,92,287,69"/>
+        <ProgressBar x:Name="pbProg" HorizontalAlignment="Left" Height="13" Margin="182,0,0,0" VerticalAlignment="Center" Width="219"/>
+        <Label Name="lbProg" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="196,136,0,0" VerticalAlignment="Top" Width="191" Height="26"/>
+        <Label x:Name="lbContent" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="196,167,0,0" VerticalAlignment="Top" Width="191" Height="29"/>
+
+    </Grid>
+</Window>
