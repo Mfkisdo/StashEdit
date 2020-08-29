@@ -1,5 +1,5 @@
 # StashEdit
-First time making a github repos. This was done using C# WPF.
+First time making a github repo. This was done using C# WPF.
 
 
 1. This is a Third-Party extension of StashApp and makes things easier to manage your porn collection.
