@@ -45,13 +45,17 @@ namespace StashEdit.Class
         public XmlSettings GetXmlSettings()
         {
             XmlSettings xf = new XmlSettings();
-            //File Does Not Exist create it and fill with default values using a new xmlwriter
-            XmlSerializer serializer = new XmlSerializer(typeof(XmlSettings));
-            using (Stream reader = new FileStream(AppDomain.CurrentDomain.BaseDirectory + @"\StarkSettings.xml", FileMode.Open))
+            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\StarkSettings.xml"))
             {
-                // Call the Deserialize method to restore the object's state.
-                xf = (XmlSettings)serializer.Deserialize(reader);
+                //File Does Not Exist create it and fill with default values using a new xmlwriter
+                XmlSerializer serializer = new XmlSerializer(typeof(XmlSettings));
+                using (Stream reader = new FileStream(AppDomain.CurrentDomain.BaseDirectory + @"\StarkSettings.xml", FileMode.Open))
+                {
+                    // Call the Deserialize method to restore the object's state.
+                    xf = (XmlSettings)serializer.Deserialize(reader);
+                }
             }
+            
             return xf;
         }
 

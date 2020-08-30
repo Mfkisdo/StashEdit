@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -9,7 +10,7 @@ using System.Windows;
 
 namespace StashEdit.Class
 {
-    
+
     class DbHandler
     {
         XmlSettings xm = new XmlSettings();
@@ -23,15 +24,19 @@ namespace StashEdit.Class
             }
             else
             {
-                SQLiteConnection con = new SQLiteConnection("Data Source=" + xm.StashDBLoc);
-                dt.Columns.Add("imgcheck");
-                SQLiteCommand com = new SQLiteCommand();
-                com.CommandText = qry;
-                com.Connection = con;
-                con.Open();
-                var adpt = new SQLiteDataAdapter(com);
-                adpt.Fill(dt);
-                con.Close();
+                if (xm.StashDBLoc != null)
+                {
+                    SQLiteConnection con = new SQLiteConnection("Data Source=" + xm.StashDBLoc);
+                    dt.Columns.Add("imgcheck");
+                    SQLiteCommand com = new SQLiteCommand();
+                    com.CommandText = qry;
+                    com.Connection = con;
+                    con.Open();
+                    var adpt = new SQLiteDataAdapter(com);
+                    adpt.Fill(dt);
+                    con.Close();
+                }
+               
             }
 
             return dt;
@@ -99,6 +104,41 @@ namespace StashEdit.Class
             command.ExecuteNonQuery();
             con.Close();
         }
+
+        public string ConvertDataTabletoString()
+        {
+            //Get JSON string from a query
+            xm = xm.GetXmlSettings();
+            DataTable dt = new DataTable();
+            string x = "";
+            using (SQLiteConnection con = new SQLiteConnection("Data Source=" + xm.StashDBLoc))
+            {
+                using (SQLiteCommand cmd = new SQLiteCommand("select id, path,checksum,oshash,title,details,url," +
+                    "           CAST(date as varchar2) as dt, rating,size,duration,video_codec,audio_codec, " +
+                    "           width, height, framerate, bitrate, studio_id,o_counter,format, " +
+                    "           cast(created_at as varchar2) as dtcreated, cast(updated_at as varchar2) as dtupdated FROM SCENES", con))
+                {
+                    con.Open();
+
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(cmd);
+                    da.Fill(dt);
+                    JsonSerializer serializer = new JsonSerializer();
+                    List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
+                    Dictionary<string, object> row;
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        row = new Dictionary<string, object>();
+                        foreach (DataColumn col in dt.Columns)
+                        {
+                            row.Add(col.ColumnName, dr[col]);
+                        }
+                        rows.Add(row);
+                    }
+                    x = JsonConvert.SerializeObject(rows);
+                }
+            }
+            return x;
+        }
     }
     public class UpdateDbContents
     {
@@ -109,3 +149,5 @@ namespace StashEdit.Class
         public string NewPath { get; set; }
     }
 }
+
+

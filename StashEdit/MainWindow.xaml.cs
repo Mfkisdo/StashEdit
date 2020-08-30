@@ -31,13 +31,22 @@ namespace StashEdit
 
         public MainWindow()
         {
-            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\StarkSettings.xml"))
+            
+            try
             {
-                xf.CheckForSettingsXmlFile();
-            }
-            InitializeComponent();
+                InitializeComponent();
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\StarkSettings.xml"))
+                {
+                    xf.CheckForSettingsXmlFile();
+                }
 
-            xf = xf.GetXmlSettings();
+                xf = xf.GetXmlSettings();
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message, "Error");
+            }
+          
         }
 
         private void lbFileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -85,7 +94,7 @@ namespace StashEdit
                 }
                 catch (Exception ex)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
                 }
                 var x = "https://metadataapi.net/api/scenes?parse=" + lbSearchList.SelectedValue.ToString();
                 var scni = GetSceneInfo(x);
@@ -103,12 +112,12 @@ namespace StashEdit
                         }
                         else
                         {
-                            Xceed.Wpf.Toolkit.MessageBox.Show("File already exists", "Informational", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("File already exists", "Informational", MessageBoxButton.OK);
                         }
                     }
                     else
                     {
-                        Xceed.Wpf.Toolkit.MessageBox.Show("No File Selected", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("No File Selected", "Warning", MessageBoxButton.OK);
                     }
 
                 }
@@ -121,23 +130,31 @@ namespace StashEdit
             if (si.data != null && si.data.Count != 0)
             {
                 //Return one match start writing some data includes updating stash db and allows a name change.
-                FileInfo fi = new FileInfo(lbFileList.SelectedValue.ToString());
-                DataTable dt = new DataTable();
-                dt.Columns.Add("id");
-                dt.Columns.Add("title");
-                dt.Columns.Add("url");
-
-                foreach (var scn in si.data)
+                if (lbFileList.SelectedValue != null)
                 {
-                    DataRow dr = dt.NewRow();
-                    dr["id"] = scn.id;
-                    dr["title"] = scn.title;
-                    dr["url"] = scn.background.full;
-                    dt.Rows.Add(dr);
+                    FileInfo fi = new FileInfo(lbFileList.SelectedValue.ToString());
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("id");
+                    dt.Columns.Add("title");
+                    dt.Columns.Add("url");
 
+                    foreach (var scn in si.data)
+                    {
+                        DataRow dr = dt.NewRow();
+                        dr["id"] = scn.id;
+                        dr["title"] = scn.title;
+                        dr["url"] = scn.background.full;
+                        dt.Rows.Add(dr);
+
+                    }
+
+                    lbSearchList.ItemsSource = dt.DefaultView;
+                }
+                else
+                {
+                    Xceed.Wpf.Toolkit.MessageBox.Show("No File Selected", "Informational", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
 
-                lbSearchList.ItemsSource = dt.DefaultView;
             }
             else
             {
