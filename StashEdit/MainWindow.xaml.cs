@@ -90,6 +90,7 @@ namespace StashEdit
             {
                 try
                 {
+                    //Doesn't always work, does error frequently.
                     Clipboard.SetText("https://metadataapi.net/scene/" + lbSearchList.SelectedValue.ToString());
                 }
                 catch (Exception ex)
