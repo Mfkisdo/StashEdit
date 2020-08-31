@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace StashEdit.Class
@@ -82,6 +83,25 @@ namespace StashEdit.Class
 
 
             return val;
+        }
+        public string CleanFileNameForSearch(string selName)
+        {
+            string NewName = Regex.Replace(selName, "[^a-zA-Z]+", " ").Replace("mp4", "");
+            List<string> ls = new List<string>
+            {
+                "xxx", "kleenex", "mp", "sd"
+            };
+
+            foreach (string str in ls)
+            {
+                if (NewName.ToLower().Contains(str.ToLower()))
+                {
+                    NewName = NewName.ToLower().Replace(str, "");
+                }
+                NewName = NewName.Replace("  ", "");
+            }
+
+            return NewName;
         }
     }
 }

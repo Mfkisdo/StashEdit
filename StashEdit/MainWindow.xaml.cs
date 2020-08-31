@@ -2,10 +2,12 @@
 using StashEdit.Class;
 using StashEdit.Windows;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,6 +28,7 @@ namespace StashEdit
 
         SceneInfo si = new SceneInfo();
         int idx = 0;
+        string dbID, dbTitle = "";
         DbHandler hand = new DbHandler();
         private XmlSettings xf = new XmlSettings();
 
@@ -54,9 +57,14 @@ namespace StashEdit
             //When a file is selected place title into textbox to search
             if (lbFileList.SelectedItem != null)
             {
+               
                 idx = lbFileList.SelectedIndex + 1;
                 DataRowView d1 = lbFileList.SelectedItem as DataRowView;
-                txtSearchMetaAPI.Text = Regex.Replace(d1["title"].ToString(), "[^0-9a-zA-Z]+", " ").Replace("mp4", "");
+                FileChanges gnfn = new FileChanges();
+                var BrandNewName = gnfn.CleanFileNameForSearch(d1["title"].ToString());
+                txtSearchMetaAPI.Text = BrandNewName;
+
+
                 SQLiteCommand cmd = new SQLiteCommand();
                 cmd.CommandText = "SELECT id, path, title, url, CAST(created_at as varchar) as dt FROM SCENES WHERE path = :pp";
                 cmd.Parameters.Add("pp", DbType.String).Value = lbFileList.SelectedValue.ToString();
@@ -64,10 +72,18 @@ namespace StashEdit
                 DataTable dt = hand.RunCommand(cmd);
                 if (dt.Rows.Count == 1)
                 {
-                    txtDBFullpath.Text = dt.Rows[0]["path"].ToString();
-                    txtDBid.Text = dt.Rows[0]["id"].ToString();
-                    txtDBTitleName.Text = dt.Rows[0]["title"].ToString();
-                    txtDBUrl.Text = dt.Rows[0]["url"].ToString();
+                    dbID = dt.Rows[0]["id"].ToString();
+                    dbTitle = dt.Rows[0]["title"].ToString();
+                    txtDbInfo.Content = "DB Results";
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("Path: " + dt.Rows[0]["path"].ToString());
+                    sb.AppendLine("ID: "  + dt.Rows[0]["id"].ToString());
+                    sb.AppendLine("Title: " + dt.Rows[0]["title"].ToString());
+                    sb.AppendLine("URL: " + dt.Rows[0]["url"].ToString());
+                    sb.AppendLine("Created Date: " + dt.Rows[0]["dt"].ToString());
+                    sb.AppendLine("");
+
+                    txtDbInfo.Text = sb.ToString();
 
                 }
             }
@@ -185,11 +201,11 @@ namespace StashEdit
                     if (!chkSortFldr.IsChecked == true)
                     {
                         UpdateDbContents cont = new UpdateDbContents();
-                        cont.id = txtDBid.Text;
+                        cont.id = dbID;
                         cont.NewPath = System.IO.Path.Combine(OldFileInfo.Directory.FullName, NewName);
                         cont.OldFile = OldFileInfo;
                         cont.scninfo = si;
-                        cont.title = txtDBTitle.Text;
+                        cont.title = dbTitle;
                         hand.UpdateStashDB(cont);
                         RefreshListFiles();
                         ClearTextBoxesOnUpdate();
@@ -223,11 +239,11 @@ namespace StashEdit
             {
                 FileInfo stashFi = new FileInfo(lbFileList.SelectedValue.ToString());
                 UpdateDbContents cont = new UpdateDbContents();
-                cont.id = txtDBid.Text;
+                cont.id = dbID;
                 cont.NewPath = stashFi.FullName;
                 cont.OldFile = stashFi;
                 cont.scninfo = si;
-                cont.title = txtDBTitle.Text;
+                cont.title = dbTitle;
                 DbHandler hand = new DbHandler();
                 hand.UpdateStashDB(cont);
                 ClearTextBoxesOnUpdate();
@@ -276,28 +292,43 @@ namespace StashEdit
         }
         private void btnStartStashRenamer_Click(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(Path.Combine(xf.stashPornDBScrapper, @"\scrapescenes.py")))
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"Python\scrapeScenes"))
             {
                 ProcessStartInfo psi = new ProcessStartInfo();
                 psi.FileName = "powershell.exe";
                 Process process = new Process();
                 process.StartInfo = psi;
-                psi.WorkingDirectory = xf.stashPornDBScrapper;
-                var rslt = MessageBox.Show("Scan for only 'scan' tag?", "Type", MessageBoxButton.YesNo);
-                if (rslt == MessageBoxResult.Yes)
+                psi.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\Python";
+                String[] configpy = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + @"\Python\configuration.py");
+                if (configpy[2].Contains("<IP_ADDRESS>"))
                 {
-                    psi.Arguments = @"python .\scrapescenes.py --tags scan";
+                    //File has not been setup alert!
+                    var setup = MessageBox.Show("Config file has not been setup, wish to do this now?", "Type", MessageBoxButton.YesNo);
+                    if (setup == MessageBoxResult.Yes)
+                    {
+                        //"C:\Users\Branden\source\repos\StashEdit\StashEdit\bin\Debug\netcoreapp3.1\Python\configuration.py"
+                        Process.Start("explorer.exe", "/select, " + Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Python", @"configuration.py"));
+                    }
                 }
                 else
                 {
-                    psi.Arguments = @"python .\scrapescenes.py";
+                    var rslt = MessageBox.Show("Scan for only 'scan' tag?", "Type", MessageBoxButton.YesNo);
+                    if (rslt == MessageBoxResult.Yes)
+                    {
+                        psi.Arguments = @"python .\scrapescenes.py --tags scan";
+                    }
+                    else
+                    {
+                        psi.Arguments = @"python .\scrapescenes.py";
+                    }
+                    process.Start();
                 }
-                process.Start();
+                
             }
             else
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show(@"scrapescenes.py not found in folder: " + Environment.NewLine + 
-                        xf.stashPornDBScrapper, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Xceed.Wpf.Toolkit.MessageBox.Show(@"scrapescenes.py not found in folder: " + Environment.NewLine +
+                        AppDomain.CurrentDomain.BaseDirectory + @"\Python\scrapeScenes.py", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
         }
@@ -440,6 +471,8 @@ namespace StashEdit
             RefreshListFiles();
         }
         #endregion
+
+       
 
     }
 }
