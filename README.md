@@ -16,8 +16,7 @@ First time making a github repo. This was done using C# WPF.
     * Naming style only allows the current 3 "Publisher;Actor;Title" but can be switched around to whatever you prefer. Make sure they have ; between them.
     * Images to Tags, This will import a folder that you have with images. The image and tag name must be the same but saves a lot of time.
     * Sort Folder is the holding point before stash gets it and allows you rename before it reaches stash. 
-        * This mainly is for the porndb scraper with Python found [here](https://github.com/pierre-delecto/stash_theporndb_scraper). 
-        * There is also another benefit of having this because this program will run it. Remember that this program on scene update will apply 'scan' tag to whatever it changes            and when the scrapper is ran it will only search for tags matching 'scan'. This will import image/url/tags/studio/
+        * There is also another benefit of having this because this program will run it. Remember that this program on scene update will apply 'scan' tag to whatever it changes            and when the scrapper is ran it will search for that tag. This will import image/url/tags/studio/ on success. You can also select no to do a whole update on the                  database
             * Under database you can clear everything with the 'scan' tag
     * Destination folders, still working on this. Though this is a quaility of life change. Move files from the sort folder with folder names in the destination folder. This
         will allow multiple folders. 
