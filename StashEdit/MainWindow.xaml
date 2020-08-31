@@ -93,7 +93,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Content="DB Id:" Grid.Column="0" Grid.Row="0"/>
+                <!--<Label Content="DB Id:" Grid.Column="0" Grid.Row="0"/>
                 <Label Content="DB Path:" Grid.Column="0" Grid.Row="1"/>
                 <Label Content="DB Title:" Grid.Column="0" Grid.Row="2"/>
                 <Label Content="DB URL:" Grid.Column="0" Grid.Row="3"/>
@@ -104,8 +104,10 @@
                 <TextBox x:Name="txtDBTitleName" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Margin="10,0,10,0" Height="35" IsEnabled="False"
                          VerticalAlignment="Center" HorizontalScrollBarVisibility="Auto"/>
                 <TextBox x:Name="txtDBUrl" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" Margin="10,0,10,0" Height="35" IsEnabled="False"
-                         VerticalAlignment="Center" HorizontalScrollBarVisibility="Auto"/>
+                         VerticalAlignment="Center" HorizontalScrollBarVisibility="Auto"/>-->
             </Grid>
+
+            <xctk:MultiLineTextEditor x:Name="txtDbInfo" Content="Nothing Selected" DropDownWidth="600" Margin="15,470,704,156"/>
             <Label Content="Search For a scene" HorizontalAlignment="Left" Margin="440,68,0,0" VerticalAlignment="Top" Width="120"/>
             <Button x:Name="btnUpdateDB" Content="Update Only Stash" Click="btnUpdateDB_Click" HorizontalAlignment="Left" Margin="703,562,0,0" VerticalAlignment="Top" Height="26" Width="117"/>
             <TextBox x:Name="txtDBTitle" HorizontalAlignment="Left" Margin="518,526,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="515"/>

@@ -55,9 +55,6 @@
                             <TextBox x:Name="txtDestFolder" Width="200" Height="250" AcceptsReturn="True" TextChanged="txtDestFolder_TextChanged" />
                         </xctk:DropDownButton.DropDownContent>
                     </xctk:DropDownButton>
-                    <Label Content="Stash PornDB Scraper Loc." Margin="6" Grid.Row="6" ToolTip="Folder containing the scrapeScenes.py file"/>
-                    <TextBox x:Name="txtstashscrapper" TextWrapping="Wrap" Grid.Column="1" Grid.Row="6" 
-                             TextChanged="txtstashscrapper_TextChanged"/>
                 </Grid>
             </TabItem>
             <TabItem Header="General" >

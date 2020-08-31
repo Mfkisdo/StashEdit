@@ -35,7 +35,6 @@ namespace StashEdit.Windows
             txtImageToTag.Text = xf.ImagesToTagsLocation;
             txtSortFolder.Text = xf.SortFolderLocation;
             txtDestFolder.Text = xf.DestinationFolders.Replace(";", Environment.NewLine);
-            txtstashscrapper.Text = xf.stashPornDBScrapper;
         }
 
         private void txtStashLocation_TextChanged(object sender, TextChangedEventArgs e)
@@ -71,12 +70,6 @@ namespace StashEdit.Windows
         private void txtDestFolder_TextChanged(object sender, TextChangedEventArgs e)
         {
             xf.DestinationFolders = txtDestFolder.Text.Replace(Environment.NewLine, ";");
-            xf.WriteToXMLDoc(xf);
-        }
-
-        private void txtstashscrapper_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            xf.stashPornDBScrapper = txtstashscrapper.Text.Replace(Environment.NewLine, ";");
             xf.WriteToXMLDoc(xf);
         }
     }
