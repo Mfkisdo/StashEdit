@@ -99,10 +99,6 @@ namespace StashEdit.Windows
                                                                                 .Replace("-", " ").Replace(",", " ").ToLower();
                             foreach (DirectoryInfo dir in DestFolders.GetDirectories("*", SearchOption.AllDirectories))
                             {
-                                for (int i = 0; i != dir.Name.Count(); i++)
-                                {
-                                    //
-                                }
                                 if (srcCleanName.Contains(dir.Name.ToLower()))
                                 {
                                     //Found match move file to folder
@@ -119,7 +115,35 @@ namespace StashEdit.Windows
             }
             return fml;
         }
+
+        public string[] MoveFileMatchingDestPaths(FileInfo fi)
+        {
+            string[] MoveToFolder = { "", "" };
+            xm = xm.GetXmlSettings();
+            Dictionary<string, string> EmployeeList = new Dictionary<string, string>();
+            var paths = xm.DestinationFolders.Split(";");
+            foreach(string path in paths)
+            {
+                DirectoryInfo pdir = new DirectoryInfo(path);
+                String srcCleanName = fi.Name.Replace(".", " ").Replace("_", " ")
+                                                                                .Replace("-", " ").Replace(",", " ").ToLower();
+                foreach(DirectoryInfo dir in pdir.GetDirectories("*", SearchOption.AllDirectories))
+                {
+                    if (srcCleanName.Contains(dir.Name.ToLower()))
+                    {
+                        //Found match move file to folder
+                        MoveToFolder[0] = fi.FullName;
+                        MoveToFolder[1] = System.IO.Path.Combine(dir.FullName, fi.Name);
+                    }
+                }
+                
+            }
+
+            return MoveToFolder;
+            
+        }
     }
+
 }
 
 public class FileMove

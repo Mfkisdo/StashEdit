@@ -16,11 +16,11 @@ namespace StashEdit.Class
         /// <returns></returns>
 
         private XmlSettings xf = new XmlSettings();
-        public string GenNewName(SceneInfo si, string ext)
+        public string GenNewName(GetSceneByID si, string ext)
         {
             String NewName = "";
 
-            if (si.data.Count != 0)
+            if (si.data != null)
             {
                 if (xf != null)
                 {
@@ -52,17 +52,17 @@ namespace StashEdit.Class
             return NewName;
         }
 
-        private string NameFormat(SceneInfo si, string pattern)
+        private string NameFormat(GetSceneByID si, string pattern)
         {
             string val = "";
             if(pattern.ToLower() == "publisher")
             {
-                val = si.data[0].site.name;
+                val = si.data.site.name;
             }
             if(pattern.ToLower() == "actor")
             {
                 List<string> ActorName = new List<string>();
-                foreach (Performer acts in si.data[0].performers)
+                foreach (Performer acts in si.data.performers)
                 {
                     if (acts.parent != null && acts.parent.extras.gender != null)
                     {
@@ -73,33 +73,31 @@ namespace StashEdit.Class
                     }
 
                 }
+                if (ActorName.Count == 0)
+                {
+                    Xceed.Wpf.Toolkit.MessageBox.Show("No actor found with scene data input manually", "Informational", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
 
                 val = string.Join(" - ", ActorName);
             }
             if (pattern.ToLower() == "title")
             {
-                val = si.data[0].title.Replace("'", "").Replace("-", "").Trim();
+                val = si.data.title.Replace("'", "").Replace("-", "").Trim();
             }
 
 
             return val;
         }
-        public string CleanFileNameForSearch(string selName)
+        public string CleanFileNameForSearch(FileInfo selFile)
         {
-            string NewName = Regex.Replace(selName, "[^a-zA-Z]+", " ").Replace("mp4", "");
-            List<string> ls = new List<string>
+            string NewName = "";
+            if (File.Exists(selFile.FullName))
             {
-                "xxx", "kleenex", "mp", "sd"
-            };
-
-            foreach (string str in ls)
-            {
-                if (NewName.ToLower().Contains(str.ToLower()))
-                {
-                    NewName = NewName.ToLower().Replace(str, "");
-                }
-                NewName = NewName.Replace("  ", "");
+                NewName = Path.GetFileNameWithoutExtension(selFile.FullName);
+                NewName = Regex.Replace(NewName, "[^a-zA-Z]+", " ").Replace("mp4", "");
             }
+           
+           
 
             return NewName;
         }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StashEdit.Class
 {
-    public class oPosters
+    public class Posters
     {
 
         [JsonProperty("large")]
@@ -18,7 +18,7 @@ namespace StashEdit.Class
         public string small { get; set; }
     }
 
-    public class oBackground
+    public class Background
     {
 
         [JsonProperty("full")]
@@ -34,14 +34,14 @@ namespace StashEdit.Class
         public string small { get; set; }
     }
 
-    public class oExtra
+    public class Extra
     {
 
         [JsonProperty("gender")]
-        public object gender { get; set; }
+        public string gender { get; set; }
 
         [JsonProperty("birthday")]
-        public object birthday { get; set; }
+        public string birthday { get; set; }
 
         [JsonProperty("iafd")]
         public object iafd { get; set; }
@@ -50,7 +50,7 @@ namespace StashEdit.Class
         public object astrology { get; set; }
 
         [JsonProperty("birthplace")]
-        public object birthplace { get; set; }
+        public string birthplace { get; set; }
 
         [JsonProperty("ethnicity")]
         public object ethnicity { get; set; }
@@ -62,13 +62,13 @@ namespace StashEdit.Class
         public object haircolor { get; set; }
 
         [JsonProperty("height")]
-        public object height { get; set; }
+        public string height { get; set; }
 
         [JsonProperty("weight")]
-        public object weight { get; set; }
+        public string weight { get; set; }
 
         [JsonProperty("measurements")]
-        public object measurements { get; set; }
+        public string measurements { get; set; }
 
         [JsonProperty("tattoos")]
         public object tattoos { get; set; }
@@ -89,7 +89,7 @@ namespace StashEdit.Class
         public object status { get; set; }
     }
 
-    public class oExtras
+    public class Extras
     {
 
         [JsonProperty("gender")]
@@ -104,8 +104,11 @@ namespace StashEdit.Class
         [JsonProperty("birthplace")]
         public string birthplace { get; set; }
 
+        [JsonProperty("birthplace_code")]
+        public string birthplace_code { get; set; }
+
         [JsonProperty("active")]
-        public int active { get; set; }
+        public int? active { get; set; }
 
         [JsonProperty("astrology")]
         public string astrology { get; set; }
@@ -132,7 +135,7 @@ namespace StashEdit.Class
         public string cupsize { get; set; }
 
         [JsonProperty("tattoos")]
-        public object tattoos { get; set; }
+        public string tattoos { get; set; }
 
         [JsonProperty("piercings")]
         public string piercings { get; set; }
@@ -147,7 +150,7 @@ namespace StashEdit.Class
         public string hips { get; set; }
     }
 
-    public class oPoster
+    public class Poster
     {
 
         [JsonProperty("url")]
@@ -160,7 +163,7 @@ namespace StashEdit.Class
         public int order { get; set; }
     }
 
-    public class oParent
+    public class Parent
     {
 
         [JsonProperty("id")]
@@ -176,7 +179,7 @@ namespace StashEdit.Class
         public Extras extras { get; set; }
 
         [JsonProperty("aliases")]
-        public IList<string> aliases { get; set; }
+        public IList<object> aliases { get; set; }
 
         [JsonProperty("image")]
         public string image { get; set; }
@@ -188,7 +191,7 @@ namespace StashEdit.Class
         public IList<Poster> posters { get; set; }
     }
 
-    public class oPerformer
+    public class Performer
     {
 
         [JsonProperty("id")]
@@ -213,7 +216,7 @@ namespace StashEdit.Class
         public Parent parent { get; set; }
     }
 
-    public class oSite
+    public class Site
     {
 
         [JsonProperty("id")]
@@ -230,9 +233,12 @@ namespace StashEdit.Class
 
         [JsonProperty("logo")]
         public string logo { get; set; }
+
+        [JsonProperty("favicon")]
+        public string favicon { get; set; }
     }
 
-    public class oTag
+    public class Tag
     {
 
         [JsonProperty("id")]
@@ -242,7 +248,7 @@ namespace StashEdit.Class
         public string tag { get; set; }
     }
 
-    public class oDatum
+    public class Data
     {
 
         [JsonProperty("id")]
@@ -268,6 +274,9 @@ namespace StashEdit.Class
 
         [JsonProperty("poster")]
         public string poster { get; set; }
+
+        [JsonProperty("trailer")]
+        public string trailer { get; set; }
 
         [JsonProperty("posters")]
         public Posters posters { get; set; }
@@ -297,57 +306,10 @@ namespace StashEdit.Class
         public object movie { get; set; }
     }
 
-    public class oLinks
-    {
-
-        [JsonProperty("first")]
-        public string first { get; set; }
-
-        [JsonProperty("last")]
-        public string last { get; set; }
-
-        [JsonProperty("prev")]
-        public object prev { get; set; }
-
-        [JsonProperty("next")]
-        public string next { get; set; }
-    }
-
-    public class oMeta
-    {
-
-        [JsonProperty("current_page")]
-        public int current_page { get; set; }
-
-        [JsonProperty("from")]
-        public int from { get; set; }
-
-        [JsonProperty("last_page")]
-        public int last_page { get; set; }
-
-        [JsonProperty("path")]
-        public string path { get; set; }
-
-        [JsonProperty("per_page")]
-        public string per_page { get; set; }
-
-        [JsonProperty("to")]
-        public int to { get; set; }
-
-        [JsonProperty("total")]
-        public string total { get; set; }
-    }
-
-    public class oSceneInfo
+    public class GetSceneByID
     {
 
         [JsonProperty("data")]
-        public IList<oDatum> data { get; set; }
-
-        [JsonProperty("links")]
-        public oLinks links { get; set; }
-
-        [JsonProperty("meta")]
-        public oMeta meta { get; set; }
+        public Data data { get; set; }
     }
 }

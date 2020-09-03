@@ -70,30 +70,30 @@ namespace StashEdit.Class
             sql.AppendLine(" WHERE ID=" + NewInfo.id);
             string NewUrl = "";
 
-            if (NewInfo.scninfo.data[0].url.ToLower().Contains("brazzers"))
+            if (NewInfo.scninfo.data.url.ToLower().Contains("brazzers"))
             {
-                NewUrl = NewInfo.scninfo.data[0].url.Replace("site-ma", "www").Replace("scene", "video");
+                NewUrl = NewInfo.scninfo.data.url.Replace("site-ma", "www").Replace("scene", "video");
             }
             else
             {
-                if (!NewInfo.scninfo.data[0].url.Contains("www"))
+                if (!NewInfo.scninfo.data.url.Contains("www"))
                 {
                     //add it
-                    NewUrl = NewInfo.scninfo.data[0].url.Insert(8, "www.");
+                    NewUrl = NewInfo.scninfo.data.url.Insert(8, "www.");
                 }
             }
 
             command.CommandText = sql.ToString();
             command.Parameters.Add("path", System.Data.DbType.String).Value = NewInfo.NewPath;
             command.Parameters.Add("title", System.Data.DbType.String).Value = NewInfo.title;
-            command.Parameters.Add("detail", System.Data.DbType.String).Value = NewInfo.scninfo.data[0].description;
-            command.Parameters.Add("dt", System.Data.DbType.String).Value = NewInfo.scninfo.data[0].created;
+            command.Parameters.Add("detail", System.Data.DbType.String).Value = NewInfo.scninfo.data.description;
+            command.Parameters.Add("dt", System.Data.DbType.String).Value = NewInfo.scninfo.data.created;
             command.Parameters.Add("url", System.Data.DbType.String).Value = NewUrl;
 
             command.ExecuteNonQuery();
             command.Parameters.Clear();
             var webClient = new WebClient();
-            byte[] imageBytes = webClient.DownloadData(NewInfo.scninfo.data[0].background.full);
+            byte[] imageBytes = webClient.DownloadData(NewInfo.scninfo.data.background.full);
             command.CommandText = "INSERT OR REPLACE INTO SCENES_COVER (scene_id, cover) VALUES (:id, :pic)";
             command.Parameters.Add("id", System.Data.DbType.Int32).Value = NewInfo.id;
             command.Parameters.Add("pic", System.Data.DbType.Binary).Value = imageBytes;
@@ -140,11 +140,12 @@ namespace StashEdit.Class
             return x;
         }
     }
+
     public class UpdateDbContents
     {
         public string title { get; set; }
         public string id { get; set; }
-        public SceneInfo scninfo { get; set; }
+        public GetSceneByID scninfo { get; set; }
         public FileInfo OldFile { get; set; }
         public string NewPath { get; set; }
     }

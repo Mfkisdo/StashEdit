@@ -26,7 +26,8 @@ namespace StashEdit
     public partial class MainWindow : Window
     {
 
-        SceneInfo si = new SceneInfo();
+        oSceneInfo SceneByParse = new oSceneInfo();
+        GetSceneByID SceneByID = new GetSceneByID();
         int idx = 0;
         string dbID, dbTitle = "";
         DbHandler hand = new DbHandler();
@@ -57,11 +58,12 @@ namespace StashEdit
             //When a file is selected place title into textbox to search
             if (lbFileList.SelectedItem != null)
             {
-               
                 idx = lbFileList.SelectedIndex + 1;
                 DataRowView d1 = lbFileList.SelectedItem as DataRowView;
                 FileChanges gnfn = new FileChanges();
-                var BrandNewName = gnfn.CleanFileNameForSearch(d1["title"].ToString());
+                //d1["title"].ToString()
+                FileInfo fi = new FileInfo(lbFileList.SelectedValue.ToString());
+                var BrandNewName = gnfn.CleanFileNameForSearch(fi);
                 txtSearchMetaAPI.Text = BrandNewName;
 
 
@@ -107,22 +109,27 @@ namespace StashEdit
                 try
                 {
                     //Doesn't always work, does error frequently.
-                    Clipboard.SetText("https://metadataapi.net/scene/" + lbSearchList.SelectedValue.ToString());
+                    Clipboard.SetText("https://beta.metadataapi.net/scenes/" + lbSearchList.SelectedValue.ToString());
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
                 }
-                var x = "https://metadataapi.net/api/scenes?parse=" + lbSearchList.SelectedValue.ToString();
-                var scni = GetSceneInfo(x);
-                txtDBTitle.Text = scni.data[0].title;
-                if (scni.data.Count == 1)
+                var x = "https://metadataapi.net/scenes/" + lbSearchList.SelectedValue.ToString();
+                SceneByID = GetSceneInfoByID(x);
+
+                if (!chkSortFldr.IsChecked == true)
+                {
+                    txtDBTitle.Text = SceneByID.data.title;
+                }
+                
+                if (SceneByID.data != null)
                 {
 
-                    if (lbFileList.SelectedValue != null && si.data != null)
+                    if (lbFileList.SelectedValue != null && SceneByParse.data[0] != null)
                     {
                         var genName = new FileChanges();
-                        string nn = genName.GenNewName(scni, Path.GetExtension(lbFileList.SelectedValue.ToString()));
+                        string nn = genName.GenNewName(SceneByID, Path.GetExtension(lbFileList.SelectedValue.ToString()));
                         if (!File.Exists(nn))
                         {
                             txtNewName.Text = nn.Replace(": ", "").Replace(@"\", "").Replace(@"/", "");
@@ -143,8 +150,8 @@ namespace StashEdit
         private async Task SearchForMetaDataAsync()
         {
             string buildqry = "https://metadataapi.net/api/scenes?parse=" + txtSearchMetaAPI.Text + "&" + xf.MetaApiLimit;
-            SceneInfo si = await Task.Run(() => GetSceneInfo(buildqry));
-            if (si.data != null && si.data.Count != 0)
+            oSceneInfo si = await Task.Run(() => GetSceneInfoByParse(buildqry));
+            if (si.data != null && si.data.Count >= 1)
             {
                 //Return one match start writing some data includes updating stash db and allows a name change.
                 if (lbFileList.SelectedValue != null)
@@ -204,8 +211,8 @@ namespace StashEdit
                         cont.id = dbID;
                         cont.NewPath = System.IO.Path.Combine(OldFileInfo.Directory.FullName, NewName);
                         cont.OldFile = OldFileInfo;
-                        cont.scninfo = si;
-                        cont.title = dbTitle;
+                        cont.scninfo = SceneByID;
+                        cont.title = txtDBTitle.Text;
                         hand.UpdateStashDB(cont);
                         RefreshListFiles();
                         ClearTextBoxesOnUpdate();
@@ -216,6 +223,32 @@ namespace StashEdit
                             cbSearchDB.Text = cache;
                         }
                         Xceed.Wpf.Toolkit.MessageBox.Show("File Updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    if (chkSortFldr.IsChecked == true)
+                    {
+                        FileInfo nf = new FileInfo(System.IO.Path.Combine(OldFileInfo.Directory.FullName, NewName));
+                        //Reset the listbox after saving
+                        chkSortFldr.IsChecked = false;
+                        chkSortFldr.IsChecked = true;
+
+                        lbFileList.SelectedValue = nf.FullName;
+
+                        //display message to move new saved to a destination folder location if available
+                        SortFiles sf = new SortFiles();
+                        var MoveFile = sf.MoveFileMatchingDestPaths(nf);
+                        if (!File.Exists(MoveFile[1]))
+                        {
+                            //Ask to move
+                            var d = Xceed.Wpf.Toolkit.MessageBox.Show("Would you like to move file to: " + Environment.NewLine + MoveFile[1], "Informational", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                            if (d == MessageBoxResult.Yes)
+                            {
+                                File.Move(MoveFile[0],MoveFile[1]);
+                                chkSortFldr.IsChecked = false;
+                                chkSortFldr.IsChecked = true;
+                                txtSearchMetaAPI.Text = "";
+                                lbSearchList.ItemsSource = "";
+                            }
+                        }
                     }
                 }
                 else
@@ -242,8 +275,8 @@ namespace StashEdit
                 cont.id = dbID;
                 cont.NewPath = stashFi.FullName;
                 cont.OldFile = stashFi;
-                cont.scninfo = si;
-                cont.title = dbTitle;
+                cont.scninfo = SceneByID;
+                cont.title = txtDBTitle.Text;
                 DbHandler hand = new DbHandler();
                 hand.UpdateStashDB(cont);
                 ClearTextBoxesOnUpdate();
@@ -376,7 +409,12 @@ namespace StashEdit
                 return base64String;
             }
         }
-        private SceneInfo GetSceneInfo(String URL)
+        /// <summary>
+        /// Get json data by ID
+        /// </summary>
+        /// <param name="URL"></param>
+        /// <returns></returns>
+        private GetSceneByID GetSceneInfoByID(String URL)
         {
             try
             {
@@ -386,13 +424,37 @@ namespace StashEdit
                     NullValueHandling = NullValueHandling.Ignore
                 };
 
-                si = JsonConvert.DeserializeObject<SceneInfo>(json, opts);
+                SceneByID = JsonConvert.DeserializeObject<GetSceneByID>(json, opts);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
-            return si;
+            return SceneByID;
+        }
+
+        /// <summary>
+        /// Get json data by parse not ID
+        /// </summary>
+        /// <param name="URL"></param>
+        /// <returns></returns>
+        private oSceneInfo GetSceneInfoByParse(String URL)
+        {
+            try
+            {
+                var json = new WebClient().DownloadString(URL);
+                var opts = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+
+                SceneByParse = JsonConvert.DeserializeObject<oSceneInfo>(json, opts);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return SceneByParse;
         }
         private void ClearTextBoxesOnUpdate()
         {
@@ -444,30 +506,38 @@ namespace StashEdit
         #region Check Boxes
         private void chkSortFldr_Checked(object sender, RoutedEventArgs e)
         {
-            //Load files found in the sort folder
-            DirectoryInfo di = new DirectoryInfo(xf.SortFolderLocation);
-            DataTable dt = new DataTable();
-            dt.Columns.Add("title");
-            dt.Columns.Add("path");
-            foreach (FileInfo fi in di.GetFiles("*", SearchOption.TopDirectoryOnly))
+            btnSave.Content = "Save Filename";
+            if (Directory.Exists(xf.SortFolderLocation))
             {
-                DataRow dr = dt.NewRow();
-                dr["title"] = fi.Name;
-                dr["path"] = fi.FullName;
-                dt.Rows.Add(dr);
+                //Load files found in the sort folder
+                DirectoryInfo di = new DirectoryInfo(xf.SortFolderLocation);
+                DataTable dt = new DataTable();
+                dt.Columns.Add("title");
+                dt.Columns.Add("path");
+                foreach (FileInfo fi in di.GetFiles("*", SearchOption.TopDirectoryOnly))
+                {
+                    DataRow dr = dt.NewRow();
+                    dr["title"] = fi.Name;
+                    dr["path"] = fi.FullName;
+                    dt.Rows.Add(dr);
+                }
+                lbFileList.ItemsSource = dt.DefaultView;
             }
-            lbFileList.ItemsSource = dt.DefaultView;
+          
         }
         private void chkRecent_Checked(object sender, RoutedEventArgs e)
         {
+            btnSave.Content = "Save New Name and Update Stash";
             RefreshListFiles();
         }
         private void chkNoURL_Checked(object sender, RoutedEventArgs e)
         {
+            btnSave.Content = "Save New Name and Update Stash";
             RefreshListFiles();
         }
         private void chkAll_Checked(object sender, RoutedEventArgs e)
         {
+            btnSave.Content = "Save New Name and Update Stash";
             RefreshListFiles();
         }
         #endregion
