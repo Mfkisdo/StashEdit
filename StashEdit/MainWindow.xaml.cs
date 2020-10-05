@@ -115,7 +115,7 @@ namespace StashEdit
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
                 }
-                var x = "https://metadataapi.net/scenes/" + lbSearchList.SelectedValue.ToString();
+                var x = "https://api.metadataapi.net/scenes/" + lbSearchList.SelectedValue.ToString();
                 SceneByID = GetSceneInfoByID(x);
 
                 if (!chkSortFldr.IsChecked == true)
