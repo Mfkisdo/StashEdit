@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,7 @@ namespace StashEdit.Windows
     public partial class SortFiles : Window
     {
         XmlSettings xm = new XmlSettings();
+        List<FileMove> fm = new List<FileMove>();
         public SortFiles()
         {
             InitializeComponent();
@@ -39,12 +41,13 @@ namespace StashEdit.Windows
         private void btnMoveFiles_Click(object sender, RoutedEventArgs e)
         {
             biBusy.IsBusy = true;
+            biBusy.BusyContent = "Getting Files To Move";
             BackgroundWorker worker = new BackgroundWorker();
             FolderSearch fs = new FolderSearch();
             fs.SourceFolder = txtSourceFolder.Text;
             fs.DestFolders = txtDestFolders.Text.Split(Environment.NewLine);
 
-            worker.RunWorkerAsync(fs);
+           worker.RunWorkerAsync(fs);
 
             worker.ProgressChanged += (o, ea) =>
             {
@@ -53,6 +56,8 @@ namespace StashEdit.Windows
             worker.RunWorkerCompleted += (o, ea) =>
             {
                 biBusy.IsBusy = false;
+                var xfm = ea.Result;
+                fm = (List<FileMove>)xfm;
             };
 
             worker.DoWork += (o, ea) =>
@@ -63,13 +68,14 @@ namespace StashEdit.Windows
 
                 foreach (var fm in fml)
                 {
-                    list.Add("From " +fm.FileFrom + Environment.NewLine + "To:"  + fm.FileTo);
+                    list.Add("From " +fm.FileFrom + Environment.NewLine + "To:"  + fm.FileTo + Environment.NewLine);
                 }
                 if (list.Count != 0)
                 {
                     //use the Dispatcher to delegate the listOfStrings collection back to the UI
                     Dispatcher.Invoke((Action)(() => txtLog.Content = "Results"));
                     Dispatcher.Invoke((Action)(() => txtLog.Text = String.Join(Environment.NewLine, list)));
+                    ea.Result = fml;
                 }
                 else
                 {
@@ -141,6 +147,26 @@ namespace StashEdit.Windows
 
             return MoveToFolder;
             
+        }
+
+        private void btnCommit_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var mf in fm)
+            {
+                if (!File.Exists(mf.FileTo))
+                { 
+                    //Only move if the file doesn't exists if it does let the user know
+                    File.Move(mf.FileFrom, mf.FileTo);
+                    Thread.Sleep(500);
+                }
+                else
+                {
+                    MessageBox.Show("File Already Exists " + Environment.NewLine + mf.FileTo, "Notice");
+                }
+                //Clear the box and the list
+                txtLog.Text = "";
+                fm.Clear();
+            }
         }
     }
 

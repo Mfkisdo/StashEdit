@@ -149,7 +149,7 @@ namespace StashEdit
         }
         private async Task SearchForMetaDataAsync()
         {
-            string buildqry = "https://metadataapi.net/api/scenes?parse=" + txtSearchMetaAPI.Text + "&" + xf.MetaApiLimit;
+            string buildqry = "https://api.metadataapi.net/scenes?parse=" + txtSearchMetaAPI.Text + "&" + xf.MetaApiLimit;
             oSceneInfo si = await Task.Run(() => GetSceneInfoByParse(buildqry));
             if (si.data != null && si.data.Count >= 1)
             {
